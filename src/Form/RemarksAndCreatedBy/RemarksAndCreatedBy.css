@@ -1,0 +1,127 @@
+.partnoqty-container {
+    margin-bottom: 20px;
+    padding: 16px;
+  }
+  
+  .partnoqty-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+  
+  .partnoqty-wrapper {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    overflow-x: auto;
+  }
+  
+  .partnoqty-table {
+    min-width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    table-layout: fixed;
+  }
+  
+  .partnoqty-header {
+    padding: 12px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 500;
+    color: #757575;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f5f5f5;
+    white-space: nowrap;
+  }
+  
+  .partnoqty-cell {
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+    white-space: nowrap;
+  }
+  
+  .partnoqty-input {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .partnoqty-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  }
+  
+  .partnoqty-delete-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #dc3545;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .partnoqty-delete-button:hover {
+    color: #c82333;
+  }
+  
+  .partnoqty-add-button {
+    padding: 10px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    margin-top: 10px;
+  }
+  
+  .partnoqty-add-button:hover {
+    background-color: #0056b3;
+  }
+  
+  @media (max-width: 768px) {
+    .partnoqty-input {
+      width: 100%;
+    }
+  }
+  
+  /* New styles for Remarks and Created By */
+  .partnoqty-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  
+  .partnoqty-form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .partnoqty-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  
+  .partnoqty-textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .partnoqty-textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  }

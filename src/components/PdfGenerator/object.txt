@@ -1,0 +1,158 @@
+{
+    "partNoQty": [
+        {
+            "partNo": "6630358 A3",
+            "qty": "209"
+        }
+    ],
+    "Hardness": {
+        "surfaceSpecified": "59-63 HRC",
+        "surfaceActual": "61-62 HRC",
+        "grindingSpecified": "",
+        "grindingActual": ""
+    },
+    "coreHardnessData": [
+        {
+            "coreHardness": "@RCD",
+            "specified": "32 – 44 HRC",
+            "actual": "40 HRC"
+        }
+    ],
+    "CaseDepth": [
+        {
+            "caseDepth": "@PCD",
+            "specified": "0.60-0.90 mm (cut off 515 HV1)",
+            "actual": "0.90 mm"
+        },
+        {
+            "caseDepth": "@Filet Root",
+            "specified": ">0.50mm @515HV",
+            "actual": "NA"
+        }
+    ],
+    "HardnessTraverse": [
+        {
+            "distance": 0.1,
+            "hardness": {
+                "@PCD": "732",
+                "@Filet Root": ""
+            }
+        },
+        {
+            "distance": 0.2,
+            "hardness": {
+                "@PCD": "722",
+                "@Filet Root": ""
+            }
+        },
+        {
+            "distance": 0.3,
+            "hardness": {
+                "@PCD": "708",
+                "@Filet Root": ""
+            }
+        },
+        {
+            "distance": 0.4,
+            "hardness": {
+                "@PCD": "698",
+                "@Filet Root": ""
+            }
+        },
+        {
+            "distance": 0.5,
+            "hardness": {
+                "@PCD": "657",
+                "@Filet Root": ""
+            }
+        },
+        {
+            "distance": 0.6,
+            "hardness": {
+                "@PCD": "622",
+                "@Filet Root": ""
+            }
+        },
+        {
+            "distance": 0.7,
+            "hardness": {
+                "@PCD": "583",
+                "@Filet Root": ""
+            }
+        },
+        {
+            "distance": 0.8,
+            "hardness": {
+                "@PCD": "551",
+                "@Filet Root": ""
+            }
+        },
+        {
+            "distance": 0.9,
+            "hardness": {
+                "@PCD": "515",
+                "@Filet Root": ""
+            }
+        },
+        {
+            "distance": 1,
+            "hardness": {
+                "@PCD": "492",
+                "@Filet Root": ""
+            }
+        }
+    ],
+    "microStructureData": [
+        {
+            "specified": "Case: Tempered Martensite, RA10-15% max, GBO-10 micron.",
+            "actual": "Case: Fine Tempered Martensite. RA: 08 %, GBO-08-10 micron. "
+        },
+        {
+            "specified": "Core: Low carbon tempered  Martensite.",
+            "actual": "Core: Low carbon tempered  Martensite. "
+        }
+    ],
+    "parameterTable": [
+        {
+            "parameter": "Grain Size ",
+            "specified": "5-8",
+            "actual": "7"
+        },
+        {
+            "parameter": "Carbon Surface Content",
+            "specified": "0.8 – 1.1% ",
+            "actual": "NA"
+        }
+    ],
+    "HardnessSamples": [
+        {
+            "sampleNo": 1,
+            "surfaceHardness": "61"
+        },
+        {
+            "sampleNo": 2,
+            "surfaceHardness": "62"
+        },
+        {
+            "sampleNo": 3,
+            "surfaceHardness": "61"
+        },
+        {
+            "sampleNo": 4,
+            "surfaceHardness": "61.5"
+        },
+        {
+            "sampleNo": 5,
+            "surfaceHardness": "62"
+        }
+    ],
+    "remarksAndCreatedBy": {
+        "remarks": "Accepted.\nFirst Speed Driving Gear 6630358 A3 is cut for micro",
+        "createdBy": "Mahesh Pawar"
+    },
+    "testCertNo": "JHTPL/1.570/2024 ",
+    "customer": "Gurunanak Transmission Pvt. Ltd",
+    "partName": "First Speed Driving Gear ",
+    "material": "20MnCr5",
+    "date": "2024-12-08"
+}
