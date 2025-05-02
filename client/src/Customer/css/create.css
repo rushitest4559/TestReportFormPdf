@@ -1,0 +1,13 @@
+.create-customer-container {
+
+}
+
+.create-customer-container h4, h5 {
+    margin: 10px 0;
+}
+
+.create-customer-container input {
+    width: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+}

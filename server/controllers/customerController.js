@@ -12,7 +12,9 @@ export async function getAllCustomers(req, res) {
 
 export async function createCustomer(req, res) {
   const customer = new Customer(req.body);
-  console.log("customer data at server comes from client",customer)
+  if(!customer.customer) {
+    return res.status(401).json({message: 'please enter at least customer name'})
+  }
   try {
     const newCustomer = await customer.save();
     res.status(201).json(newCustomer);
@@ -61,72 +63,76 @@ export const getCustomerSuggestions = async (req, res) => {
   const query = req.query.q || '';
   try {
     const suggestions = await Customer.find({
-      customerName: { $regex: `^${query}`, $options: 'i' }
+      customer: { $regex: `^${query}`, $options: 'i' }
     })
       .limit(5)
-      .select('customerName -_id');
+      .select('customer -_id');
 
-    res.json(suggestions.map(c => c.customerName));
+    res.json(suggestions.map(c => c.customer));
   } catch (err) {
     console.error('Error fetching suggestions:', err);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ message: 'server error' });
   }
 };
 
 // Get part name suggestions
 export const getPartNameSuggestions = async (req, res) => {
   const query = req.query.q || '';
-  
+  const customer = req.query.customer || '';
+
   try {
-    // Find all customers and their parts where partName matches the query
     const suggestions = await Customer.aggregate([
-      { $unwind: "$parts" },  // Unwind the parts array to allow querying individual parts
-      { $match: { "parts.partName": { $regex: `^${query}`, $options: 'i' } } },  // Match partName
-      { $group: { _id: "$parts.partName" } },  // Group by partName to get unique results
-      { $limit: 5 }  // Limit to 5 suggestions
+      { $match: { customer: customer } },  // Match the selected customer
+      { $unwind: "$parts" },
+      { $match: { "parts.partName": { $regex: `^${query}`, $options: 'i' } } },
+      { $group: { _id: "$parts.partName" } },
+      { $limit: 5 }
     ]);
-    
-    res.json(suggestions.map(s => s._id));  // Send part names in response
+
+    res.json(suggestions.map(s => s._id));
   } catch (err) {
     console.error('Error fetching part name suggestions:', err);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 // Get material suggestions
 export const getMaterialSuggestions = async (req, res) => {
   const query = req.query.q || '';
-  
+  const customer = req.query.customer || '';
+
   try {
-    // Find all customers and their parts where material matches the query
     const suggestions = await Customer.aggregate([
-      { $unwind: "$parts" },  // Unwind the parts array
-      { $match: { "parts.material": { $regex: `^${query}`, $options: 'i' } } },  // Match material
-      { $group: { _id: "$parts.material" } },  // Group by material to get unique results
-      { $limit: 5 }  // Limit to 5 suggestions
+      { $match: { customer: customer } },  // Match the selected customer
+      { $unwind: "$parts" },
+      { $match: { "parts.material": { $regex: `^${query}`, $options: 'i' } } },
+      { $group: { _id: "$parts.material" } },
+      { $limit: 5 }
     ]);
-    
-    res.json(suggestions.map(s => s._id));  // Send materials in response
+
+    res.json(suggestions.map(s => s._id));
   } catch (err) {
     console.error('Error fetching material suggestions:', err);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
+
 export const getParameters = async (req, res) => {
   try {
-    const { customerName, partName, material } = req.body;
+    const { customer, partName, material } = req.body;
 
     // Validate input
-    if (!customerName || !partName || !material) {
+    if (!customer || !partName || !material) {
       return res.status(400).json({ 
-        error: 'Missing required fields: customerName, partName, and material are required' 
+        message: 'Missing required fields: customer, partName, and material are required' 
       });
     }
 
     // Find document matching criteria
     const result = await Customer.findOne({
-      customerName,
+      customer,
       'parts.partName': partName,
       'parts.material': material
     }, {
@@ -135,7 +141,7 @@ export const getParameters = async (req, res) => {
 
     if (!result || !result.parts || result.parts.length === 0) {
       return res.status(404).json({ 
-        error: 'No matching part found for the provided criteria' 
+        message: 'No matching part found for the provided criteria' 
       });
     }
 
@@ -150,7 +156,7 @@ export const getParameters = async (req, res) => {
   } catch (error) {
     console.error('Error fetching parameters:', error);
     res.status(500).json({ 
-      error: 'Internal server error' 
+      message: error.message 
     });
   }
 };

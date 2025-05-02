@@ -3,6 +3,8 @@ import express, { json } from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
 import connectDB from './config/database.js'; // Import the database connection function
+
+import testreportRoutes from './routes/testReportRoutes.js'
 import customerRoutes from './routes/customerRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 
@@ -19,6 +21,7 @@ app.use(json());
 connectDB(); // Connect to the database
 
 // Routes
+app.use('/api/testreports', testreportRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/users', userRoutes);
 

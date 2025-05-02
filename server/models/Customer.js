@@ -3,7 +3,7 @@ import { Schema, model } from 'mongoose';
 
 const parameterSchema = new Schema({
   name: String,
-  value: String,
+  specified: String,
 });
 
 const partSchema = new Schema({
@@ -13,8 +13,10 @@ const partSchema = new Schema({
 });
 
 const customerSchema = new Schema({
-  customerName: String,
+  customer: String,
   parts: [partSchema],
+}, {
+  timestamps: true
 });
 
 export default model('Customer', customerSchema);
