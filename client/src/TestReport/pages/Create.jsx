@@ -15,7 +15,17 @@ const Create = () => {
 
     const [report, setReport] = useState({
         testCertNo: 'JHTPL/',
-        parameters: []
+        parameters: [
+            { name: 'Heat Treatment', specified: 'CHT', actual: 'CHT' },
+            { name: 'Surface Hardness', specified: '58-62 HRC', actual: '' },
+            { name: 'Core Hardness', specified: '', actual: '' },
+            { name: 'Core Hardness', specified: '', actual: '' },
+            { name: 'Case Depth', specified: '', actual: '' },
+            { name: 'Case Depth', specified: '', actual: '' },
+            { name: 'Thread Hardness', specified: '', actual: '' },
+            { name: 'Microstructure-Case', specified: '', actual: '' },
+            { name: 'Microstructure-Core', specified: '', actual: '' },
+        ]
     })
 
     const updateField = (field, value) => {
@@ -31,7 +41,7 @@ const Create = () => {
     return (
         <div>
 
-<Link to="/"><button className='add-btn'>Back to Test Reports</button></Link>
+            <Link to="/create"><button className='add-btn'>Back to Test Reports</button></Link>
             <br /><br />
 
             {status.text && (

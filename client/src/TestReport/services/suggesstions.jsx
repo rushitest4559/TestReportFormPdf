@@ -5,7 +5,7 @@ export const customerChange = async (event, setSuggestions) => {
 
     if (newValue.length >= 2) {
         try {
-            const response = await axios.get(`/api/customers/suggestions?q=${newValue}`);
+            const response = await axios.get(`/api/testreports/suggestions?q=${newValue}`);
             setSuggestions(response.data); // assuming it returns an array of names
             console.log(response.data)
         } catch (error) {
@@ -22,7 +22,7 @@ export const partNameChange = async (event, setPartSuggestions, customer) => {
 
     if (newValue.length >= 2) {
         try {
-            const response = await axios.get('/api/customers/part-suggestions', {
+            const response = await axios.get('/api/testreports/part-suggestions', {
                 params: { q: newValue, customer: customer }
             });
             setPartSuggestions(response.data);
@@ -35,13 +35,13 @@ export const partNameChange = async (event, setPartSuggestions, customer) => {
 };
 
 // Function to handle Material input change
-export const materialChange = async (event, setMaterialSuggestions, customer) => {
+export const materialChange = async (event, setMaterialSuggestions, customer, partName) => {
     const newValue = event.target.value;
 
     if (newValue.length >= 2) {
         try {
-            const response = await axios.get('/api/customers/material-suggestions', {
-                params: { q: newValue, customer: customer }
+            const response = await axios.get('/api/testreports/material-suggestions', {
+                params: { q: newValue, customer: customer, partName: partName }
             });
             setMaterialSuggestions(response.data);
         } catch (err) {

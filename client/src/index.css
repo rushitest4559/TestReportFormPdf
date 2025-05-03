@@ -69,3 +69,16 @@ a {
 .suggestions-list li:hover {
     background-color: #f0f0f0;
 }
+
+.GeneralInfo input {
+    margin: 10px 0;
+    padding: 7px 15px;
+    border: 1px solid gray;
+    max-width: 250px;
+}
+
+.hardnessSamples {
+    /* border: 1px solid; */
+    display: grid;
+    place-items: center;
+}

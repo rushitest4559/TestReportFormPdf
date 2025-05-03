@@ -5,12 +5,12 @@ const HardnessSamples = ({ report, updateField }) => {
     return report?.hardnessSamples?.length > 0
       ? report.hardnessSamples
       : [
-          { sampleNo: 1, surfaceHardness: '' },
-          { sampleNo: 2, surfaceHardness: '' },
-          { sampleNo: 3, surfaceHardness: '' },
-          { sampleNo: 4, surfaceHardness: '' },
-          { sampleNo: 5, surfaceHardness: '' },
-        ];
+        { sampleNo: 1, surfaceHardness: '' },
+        { sampleNo: 2, surfaceHardness: '' },
+        { sampleNo: 3, surfaceHardness: '' },
+        { sampleNo: 4, surfaceHardness: '' },
+        { sampleNo: 5, surfaceHardness: '' },
+      ];
   });
 
   useEffect(() => {
@@ -37,27 +37,43 @@ const HardnessSamples = ({ report, updateField }) => {
   const getTitle = () => `Surface Hardness of ${rows.length} Sample${rows.length !== 1 ? 's' : ''}`;
 
   return (
-    <div className="partnoqty-container">
-      <h2 style={{marginTop: '50px'}} className="partnoqty-title">{getTitle()}</h2>
-      <div className="partnoqty-wrapper">
-        <table className="partnoqty-table">
+    <div style={{ padding: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+        <h2 style={{ margin: 0 }}>{getTitle()}</h2>
+        <button
+          onClick={handleAddRow}
+          style={{
+            padding: '6px 12px',
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Add Sample
+        </button>
+      </div>
+      
+      <div style={{ overflowX: 'auto', border: '1px solid #ccc', borderRadius: '4px' }}>
+        <table style={{ width: '100%', minWidth: '600px', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              <th className="partnoqty-header">Sample No.</th>
-              <th className="partnoqty-header">Surface Hardness (HRC)</th>
+              <th style={thStyle}>Sample No.</th>
+              <th style={thStyle}>Surface Hardness (HRC)</th>
               {/* <th className="partnoqty-header">Delete</th> */}
             </tr>
           </thead>
           <tbody>
             {rows.map((row, index) => (
               <tr key={index}>
-                <td className="partnoqty-cell">{row.sampleNo}</td>
-                <td className="partnoqty-cell">
+                <td style={tdStyle}>{row.sampleNo}</td>
+                <td style={tdStyle}>
                   <input
                     type="number"
                     value={row.surfaceHardness}
                     onChange={(e) => handleInputChange(index, e.target.value)}
-                    className="partnoqty-input"
+                    style={inputStyle}
                     placeholder="Enter Surface Hardness"
                   />
                 </td>
@@ -74,11 +90,30 @@ const HardnessSamples = ({ report, updateField }) => {
           </tbody>
         </table>
       </div>
-      <button onClick={handleAddRow} className="add-btn">
+      {/* <button onClick={handleAddRow} className="add-btn">
         Add Sample
-      </button>
+      </button> */}
     </div>
   );
+};
+
+const thStyle = {
+  padding: '8px',
+  border: '1px solid #ccc',
+  backgroundColor: '#f7f7f7',
+  whiteSpace: 'nowrap'
+};
+
+const tdStyle = {
+  padding: '8px',
+  border: '1px solid #ccc',
+  backgroundColor: 'white',
+};
+
+const inputStyle = {
+  width: '100%',
+  padding: '6px',
+  boxSizing: 'border-box',
 };
 
 export default HardnessSamples;

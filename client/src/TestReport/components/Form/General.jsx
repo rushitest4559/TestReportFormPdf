@@ -23,7 +23,7 @@ const GeneralInfo = ({ report, updateField }) => {
             partNameChange(e, setPartSuggestions, form.customer)
         }
         if(name == 'material') {
-            materialChange(e, setMaterialSuggestions, form.customer)
+            materialChange(e, setMaterialSuggestions, form.customer, form.partName)
         }
     }
 
@@ -59,7 +59,7 @@ const GeneralInfo = ({ report, updateField }) => {
     const [materialSuggestions, setMaterialSuggestions] = useState([]);
 
     return (
-        <div className='GeneralInfo'>
+        <div style={{ padding: '1rem' }} className='GeneralInfo'>
             <h2>General Info</h2>
 
             <div style={{ display: 'flex', alignItems: 'center', width: '300px' }}>

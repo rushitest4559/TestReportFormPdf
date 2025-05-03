@@ -1,18 +1,32 @@
 import axios from "axios";
 
 // Fetch all test reports
-export const fetchTestReports = async (setReports, setStatus, setLoading) => {
-    setLoading(true)
+export const fetchTestReports = async (
+    params,
+    updateReports, // this must be a function
+    setStatus,
+    setLoading,
+    setHasMore
+) => {
     try {
-        const res = await fetch('/api/testreports');
-        const data = await res.json();
-        setReports(Array.isArray(data) ? data : []);
-        setStatus({ type: 'success', text: 'Test Reports Fetched successfully!' });
+        setLoading(true);
+        const response = await axios.get('/api/testreports', { params });
+        const { reports, hasMore } = response.data;
+
+        updateReports((prev) => {
+            if (params.page === 1) {
+                return reports; // Reset
+            } else {
+                return [...prev, ...reports]; // Append
+            }
+        });
+
+        setHasMore(hasMore);
     } catch (err) {
-        setStatus({ type: 'error', text: 'Failed to fetch test reports. ' + err.response?.data?.message });
         console.error(err);
+        setStatus({ type: 'error', text: 'Failed to fetch test reports' });
     } finally {
-        setLoading(false)
+        setLoading(false);
     }
 };
 
@@ -44,7 +58,7 @@ export const createTestReport = async (reportData, setLoading, setStatus, naviga
     try {
         await axios.post('/api/testreports', reportData);
         setStatus({ type: 'success', text: 'Test report created successfully.' });
-        navigate('/');
+        navigate('/dashboard');
     } catch (err) {
         setStatus({ type: 'error', text: 'Failed to create test report. ' + err.response?.data?.message });
         console.error(err);
@@ -60,13 +74,13 @@ export const updateTestReport = async (id, updatedData, setStatus, setLoading, n
         ...sample,
         surfaceHardness: Number(sample.surfaceHardness)
     }));
-    
+
     try {
         await axios.put(`/api/testreports/${id}`, updatedData);
-        setStatus({type: 'success', text: 'Test report updated successfully.'});
+        setStatus({ type: 'success', text: 'Test report updated successfully.' });
         navigate('/');
     } catch (err) {
-        setStatus({type: 'error', text: 'Failed to update test report. '+err.response?.data?.message});
+        setStatus({ type: 'error', text: 'Failed to update test report. ' + err.response?.data?.message });
         console.error(err);
     } finally {
         setLoading(false)
@@ -87,5 +101,40 @@ export const deleteTestReport = async (id, setDeletingId, setReports, setStatus)
         } finally {
             setDeletingId(null)
         }
+    }
+};
+
+
+export const handleInsertDummyReports = async (setLoading, setStatus) => {
+    setLoading(true);
+    try {
+        const response = await fetch('/api/testreports/insert-dummy-reports', {
+            method: 'POST',
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            setStatus({ type: 'success', text: data.message });
+        } else {
+            throw new Error('Failed to insert dummy reports');
+        }
+    } catch (error) {
+        setStatus({ type: 'error', text: error.message });
+    } finally {
+        setLoading(false);
+    }
+};
+
+export const deleteAllTestReports = async (setStatus, setLoading, setTestReports) => {
+    try {
+        setLoading(true);
+        await axios.delete('/api/testreports/delete-all');
+        setTestReports([]);
+        setStatus({ type: 'success', text: 'All test reports deleted successfully.' });
+    } catch (err) {
+        console.error(err);
+        setStatus({ type: 'error', text: 'Failed to delete all test reports.' });
+    } finally {
+        setLoading(false);
     }
 };
