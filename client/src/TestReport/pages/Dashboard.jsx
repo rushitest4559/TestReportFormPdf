@@ -7,48 +7,44 @@ import { customerChange, materialChange, partNameChange } from '../services/sugg
 import { handleCreatePDF } from '../services/Fetch';
 
 const Dashboard = () => {
-  // States for storing reports, loading status, filter settings, and suggestions
   const [testReports, setTestReports] = useState([]);
   const [status, setStatus] = useState({ type: null, text: '' });
   const [deletingId, setDeletingId] = useState(null);
-  const [loadingpdfId, setLoadingPdfId] = useState(null)
+  const [loadingpdfId, setLoadingPdfId] = useState(null);
   const [hasMore, setHasMore] = useState(false);
-
   const [initialLoading, setInitialLoading] = useState(true);
   const [loadMoreLoading, setLoadMoreLoading] = useState(false);
-  const [applyFilLoading, setApplyFilLoading] = useState(false)
-  const [removeFilLoading, setRemoveFilLoading] = useState(false)
+  const [applyFilLoading, setApplyFilLoading] = useState(false);
+  const [removeFilLoading, setRemoveFilLoading] = useState(false);
+  const [dummyLoading, setDummyLoading] = useState(false);
+  const [deleteAllLoading, setDeleteAllLoading] = useState(false);
 
-    const [dummyLoading, setDummyLoading] = useState(false);
-  const [deleteAllLoading, setDeleteAllLoading] = useState(false)
-
-
-  // Filter settings for customer, partName, material, date range
   const [filters, setFilters] = useState({
     customer: '',
     partName: '',
     material: '',
     startDate: '',
     endDate: '',
-    page: 1,  // Start at page 1
-    limit: 5, // Limit of 5 reports per request
+    page: 1,
+    limit: 5,
   });
 
-  // Suggestions for auto-completion of fields
   const [suggestions, setSuggestions] = useState({
     customer: [],
     partName: [],
     material: [],
   });
 
-  // Handles the input change for filtering and fetches suggestions
+  const [summary, setSummary] = useState({
+    totalReports: 0,
+    uniqueCustomers: 0,
+    uniqueParts: 0,
+    totalMaterials: 0,
+  });
+
   const handleSuggestionInput = (field, event) => {
     const value = event.target.value;
-
-    // Update the filter value
     setFilters((prev) => ({ ...prev, [field]: value }));
-
-    // Fetch suggestions based on the field
     if (field === 'customer') {
       customerChange(event, (data) =>
         setSuggestions((prev) => ({ ...prev, customer: data }))
@@ -67,14 +63,10 @@ const Dashboard = () => {
     }
   };
 
-  // Applies filters and fetches reports
   const handleApplyFilters = () => {
-    // Fetch reports based on the current filters
-    console.log('Applying filters:', filters);
-    fetchTestReports({ ...filters, page: 1, limit: 5 }, setTestReports, setStatus, setApplyFilLoading, setHasMore);
+    fetchTestReports({ ...filters, page: 1, limit: 5 }, setTestReports, setStatus, setApplyFilLoading, setHasMore, setSummary);
   };
 
-  // Resets the filters and fetches all reports
   const handleResetFilters = () => {
     setFilters({
       customer: '',
@@ -82,14 +74,13 @@ const Dashboard = () => {
       material: '',
       startDate: '',
       endDate: '',
-      page: 1, // Reset to page 1
+      page: 1,
       limit: 5,
     });
     setSuggestions({ customer: [], partName: [], material: [] });
-    fetchTestReports({ page: 1, limit: 5 }, setTestReports, setStatus, setRemoveFilLoading, setHasMore);
+    fetchTestReports({ page: 1, limit: 5 }, setTestReports, setStatus, setRemoveFilLoading, setHasMore, setSummary);
   };
 
-  // Fetch test reports on component mount or when filters change
   useEffect(() => {
     setInitialLoading(true);
     fetchTestReports(
@@ -97,25 +88,24 @@ const Dashboard = () => {
       setTestReports,
       setStatus,
       setInitialLoading,
-      setHasMore
+      setHasMore,
+      setSummary
     );
   }, []);
 
-
-  // Function to handle "Load More" button click, incrementing the page
   const handleLoadMore = () => {
     if (hasMore) {
       setLoadMoreLoading(true);
       const nextPage = filters.page + 1;
-
       fetchTestReports(
         { ...filters, page: nextPage, limit: filters.limit },
-        setTestReports, // this now works because fetchTestReports expects a function
+        setTestReports,
         setStatus,
         setLoadMoreLoading,
-        setHasMore
+        setHasMore,
+        setSummary
       );
-      setFilters((prev) => ({ ...prev, page: nextPage })); // update filter state
+      setFilters((prev) => ({ ...prev, page: nextPage }));
     }
   };
 
@@ -128,22 +118,21 @@ const Dashboard = () => {
       setTestReports,
       setStatus,
       setInitialLoading,
-      setHasMore
+      setHasMore,
+      setSummary
     );
   };
 
   return (
     <div className="dashboard-container">
-      <h2 className="dashboard-title">Test Reports</h2>
+      <h2 className="dashboard-title">Test Reports Dashboard</h2>
 
       {initialLoading && <p>Loading...</p>}
 
-
       <Link to='/create'>
-        <button className='submit-btn'>Create New TestReport</button>
+        <button className='submit-btn'>Create New Test Report</button>
       </Link>
 
-      {/* Displaying the status message if there's any */}
       {status.text && (
         <div
           style={{
@@ -176,7 +165,29 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Filter Bar Component */}
+      <div className="summary-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '30px' }}>
+        <div style={{ backgroundColor: '#f4a261', padding: '20px', borderRadius: '8px', textAlign: 'center', color: 'white' }}>
+          <h3 style={{ fontSize: '2.5rem', margin: '0' }}>{summary.totalReports}</h3>
+          <p style={{ margin: '10px 0 20px', fontSize: '1.2rem' }}>Total Reports</p>
+          <Link to="/reports" style={{ color: 'white', textDecoration: 'none', fontSize: '0.9rem' }}>MORE INFO ➔</Link>
+        </div>
+        <div style={{ backgroundColor: '#2a9d8f', padding: '20px', borderRadius: '8px', textAlign: 'center', color: 'white' }}>
+          <h3 style={{ fontSize: '2.5rem', margin: '0' }}>{summary.uniqueCustomers}</h3>
+          <p style={{ margin: '10px 0 20px', fontSize: '1.2rem' }}>Customers</p>
+          <Link to="/customers" style={{ color: 'white', textDecoration: 'none', fontSize: '0.9rem' }}>MORE INFO ➔</Link>
+        </div>
+        <div style={{ backgroundColor: '#219ebc', padding: '20px', borderRadius: '8px', textAlign: 'center', color: 'white' }}>
+          <h3 style={{ fontSize: '2.5rem', margin: '0' }}>{summary.uniqueParts}</h3>
+          <p style={{ margin: '10px 0 20px', fontSize: '1.2rem' }}>Parts</p>
+          <Link to="/parts" style={{ color: 'white', textDecoration: 'none', fontSize: '0.9rem' }}>MORE INFO ➔</Link>
+        </div>
+        <div style={{ backgroundColor: '#e76f51', padding: '20px', borderRadius: '8px', textAlign: 'center', color: 'white' }}>
+          <h3 style={{ fontSize: '2.5rem', margin: '0' }}>{summary.totalMaterials}</h3>
+          <p style={{ margin: '10px 0 20px', fontSize: '1.2rem' }}>Materials</p>
+          <Link to="/materials" style={{ color: 'white', textDecoration: 'none', fontSize: '0.9rem' }}>MORE INFO ➔</Link>
+        </div>
+      </div>
+
       <FilterBar
         filters={filters}
         setFilters={setFilters}
@@ -189,7 +200,6 @@ const Dashboard = () => {
         loading2={removeFilLoading}
       />
 
-      {/* Table for desktop view */}
       <div className="table-container">
         <table className="desktop-table">
           <thead>
@@ -207,11 +217,9 @@ const Dashboard = () => {
                 <td>{report.partName}</td>
                 <td>{new Date(report.createdAt).toLocaleDateString()}</td>
                 <td>
-                  {/* Edit Button */}
                   <Link to={`/edit/${report._id}`}>
                     <button className="add-btn">Edit</button>
                   </Link>
-                  {/* Delete Button */}
                   <button
                     onClick={() =>
                       deleteTestReport(report._id, setDeletingId, setTestReports, setStatus)
@@ -220,7 +228,6 @@ const Dashboard = () => {
                   >
                     {deletingId === report._id ? 'Deleting...' : 'Delete'}
                   </button>
-                  {/* pdf */}
                   <button
                     onClick={() => handleCreatePDF(report._id, setLoadingPdfId)}
                     style={{
@@ -242,7 +249,6 @@ const Dashboard = () => {
         </table>
       </div>
 
-      {/* Mobile View for reports */}
       <div className="mobile-list">
         {testReports.map((report) => (
           <div key={report._id} className="mobile-card">
@@ -261,19 +267,19 @@ const Dashboard = () => {
               {deletingId === report._id ? 'Deleting...' : 'Delete'}
             </button>
             <button
-                    onClick={() => handleCreatePDF(report._id, setLoadingPdfId)}
-                    style={{
-                      padding: "6px 12px",
-                      backgroundColor: "#1976d2",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                      marginLeft: "8px"
-                    }}
-                  >
-                    {loadingpdfId === report._id ? 'Creating...' : 'Create PDF'}
-                  </button>
+              onClick={() => handleCreatePDF(report._id, setLoadingPdfId)}
+              style={{
+                padding: "6px 12px",
+                backgroundColor: "#1976d2",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                marginLeft: "8px"
+              }}
+            >
+              {loadingpdfId === report._id ? 'Creating...' : 'Create PDF'}
+            </button>
           </div>
         ))}
       </div>
@@ -286,13 +292,10 @@ const Dashboard = () => {
         </div>
       )}
 
-
-      {/* Button to insert 1000 dummy reports */}
       <button onClick={handleInsert} className="submit-btn" disabled={dummyLoading}>
         {dummyLoading ? 'Inserting...' : 'Insert 1000 Dummy Test Reports'}
       </button>
 
-      {/* Button to delete all test reports */}
       <button
         onClick={() => deleteAllTestReports(setStatus, setDeleteAllLoading, setTestReports)}
         className="delete-btn"
@@ -300,8 +303,6 @@ const Dashboard = () => {
       >
         {deleteAllLoading ? 'Deleting...' : 'Delete All Test Reports'}
       </button>
-
-
     </div>
   );
 };

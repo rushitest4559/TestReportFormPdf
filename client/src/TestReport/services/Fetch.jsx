@@ -137,7 +137,7 @@ export const handleCreatePDF = async (reportId, setLoadingpdfId) => {
         doc.text(`Remarks: ${report.remarks || ""}`, 10, doc.lastAutoTable.finalY + 16);
 
         // Signature
-        doc.text("Mahesh Nighojkar", 10, doc.lastAutoTable.finalY + 32);
+        doc.text("Mahesh Pawar", 10, doc.lastAutoTable.finalY + 32);
         doc.text("Prepared By", 10, doc.lastAutoTable.finalY + 38);
 
         // 3. Download PDF (auto works on mobile and desktop)

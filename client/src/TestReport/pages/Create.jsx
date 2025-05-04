@@ -23,8 +23,8 @@ const Create = () => {
             { name: 'Case Depth', specified: '', actual: '' },
             { name: 'Case Depth', specified: '', actual: '' },
             { name: 'Thread Hardness', specified: '', actual: '' },
-            { name: 'Microstructure-Case', specified: '', actual: '' },
-            { name: 'Microstructure-Core', specified: '', actual: '' },
+            { name: 'Microstructure-Case', specified: 'Fine Tempered martensite', actual: 'Fine Tempered martensite' },
+            { name: 'Microstructure-Core', specified: 'Low Carbon Tempered Martensite', actual: 'Low Carbon Tempered Martensite' },
         ]
     })
 
@@ -41,7 +41,7 @@ const Create = () => {
     return (
         <div>
 
-            <Link to="/create"><button className='add-btn'>Back to Test Reports</button></Link>
+            <Link to="/dashboard"><button className='add-btn'>Back to Test Reports</button></Link>
             <br /><br />
 
             {status.text && (

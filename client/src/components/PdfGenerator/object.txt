@@ -95,7 +95,7 @@
             }
         },
         {
-            "distance": 1,
+            "distance": 1.0,
             "hardness": {
                 "@PCD": "492",
                 "@Filet Root": ""
